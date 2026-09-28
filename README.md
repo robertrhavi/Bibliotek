@@ -1,2 +1,2 @@
 # Bibliotek
-API REST desenvolvida em [Sua Linguagem/Framework] para automação e controle de bibliotecas. Permite o gerenciamento de catálogo, autores, categorias, empréstimos e devoluções de acervos.
+API REST desenvolvida em FastAPI para automação e controle de bibliotecas. Permite o gerenciamento de catálogo, autores, categorias, empréstimos e devoluções de acervos.
