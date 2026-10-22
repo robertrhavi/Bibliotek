@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
-
+from datetime import datetime
 
 class CategoriaBase(BaseModel):
     nome : str
@@ -12,8 +12,12 @@ class CategoriaCreate(CategoriaBase):
 
 
 class CategoriaUpdate(BaseModel):
-    pass
-
+    nome: Optional[str] = None
+    descricao: Optional[str] = None
 
 class CategoriaResponse(CategoriaBase):
-    pass
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

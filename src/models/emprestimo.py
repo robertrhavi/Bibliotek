@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional, TYPE_CHECKING
-from sqlalchemy import String, DateTime, ForeignKey, Numeric, func
+from sqlalchemy import String, DateTime, ForeignKey, Numeric, func, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class EmprestimoModel(Base):
     __tablename__ = "emprestimos"
-    __table_args__ = {"schema": "bibliotek"}
+    __table_args__ = Index("idx_emprestimos_atraso", "status", "data_devolucao_prevista"),{"schema": "bibliotek"}
 
     id: Mapped[int] = mapped_column(primary_key=True)
     exemplar_id: Mapped[int] = mapped_column(ForeignKey("bibliotek.exemplares.id"))
@@ -21,7 +21,7 @@ class EmprestimoModel(Base):
     data_emprestimo: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now()
     )
-    data_devolucao_prevista: Mapped[datetime] = mapped_column(DateTime)
+    data_devolucao_prevista: Mapped[datetime] = mapped_column(DateTime, index=True)
     
     data_devolucao_real: Mapped[Optional[datetime]] = mapped_column(DateTime)
 
@@ -30,7 +30,7 @@ class EmprestimoModel(Base):
     multa_valor: Mapped[Optional[Decimal]] = mapped_column(
         Numeric(10, 2), default=0.00
     )
-
+    
     exemplar: Mapped["ExemplarModel"] = relationship(back_populates="emprestimos")
     usuario: Mapped["UsuariosModel"] = relationship(back_populates="emprestimos")
 
@@ -38,3 +38,6 @@ class EmprestimoModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), onupdate=func.now()
     )
+    @property
+    def foi_devolvido(self) -> bool:
+        return self.data_devolucao_real is not None

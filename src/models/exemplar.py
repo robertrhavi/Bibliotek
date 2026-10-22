@@ -5,6 +5,7 @@ from datetime import datetime, date
 from database import Base
 if TYPE_CHECKING:
     from livro import LivroModel
+    from emprestimo import EmprestimoModel
     
 
 class ExemplarModel(Base):
@@ -20,4 +21,5 @@ class ExemplarModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
             DateTime, server_default=func.now(), onupdate=func.now()
         )
+    emprestimos: Mapped[list["EmprestimoModel"]] = relationship(back_populates="exemplar")
     livro: Mapped["LivroModel"] = relationship(back_populates="exemplares")
