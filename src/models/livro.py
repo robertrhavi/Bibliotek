@@ -3,9 +3,13 @@ from typing import Optional, TYPE_CHECKING
 from sqlalchemy import String, DateTime, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
+
 if TYPE_CHECKING:
-    from editora import EditoraModel
-    from categorias import CategoriaModel
+    from models.editora import EditoraModel
+    from models.categoria import CategoriaModel
+    from models.exemplar import ExemplarModel
+    from models.livro_autor import LivroAutorModel
+
 
 class LivroModel(Base):
     __tablename__ = "livros"
@@ -26,3 +30,11 @@ class LivroModel(Base):
 
     editora: Mapped["EditoraModel"] = relationship(back_populates="livros")
     categoria: Mapped["CategoriaModel"] = relationship(back_populates="livros")
+    
+    exemplares: Mapped[list["ExemplarModel"]] = relationship(
+        back_populates="livro", lazy="selectin"
+    )
+    
+    livro_autores: Mapped[list["LivroAutorModel"]] = relationship(
+        back_populates="livro", lazy="selectin"
+    )

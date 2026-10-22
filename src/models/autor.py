@@ -1,8 +1,11 @@
 from datetime import date, datetime
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from sqlalchemy import String, Date, DateTime, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
+
+if TYPE_CHECKING:
+    from models.livro_autor import LivroAutorModel
 
 
 class AutorModel(Base):
@@ -19,4 +22,8 @@ class AutorModel(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), onupdate=func.now()
+    )
+
+    livro_autores: Mapped[list["LivroAutorModel"]] = relationship(
+        back_populates="autor"
     )
