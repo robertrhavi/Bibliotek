@@ -1,3 +1,3 @@
-from crud.crud_base import CRUD
+from crud_controllers.crud_base import CRUD
 from models.categoria import CategoriaModel
 cnt_categoria = CRUD(CategoriaModel)

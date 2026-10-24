@@ -13,9 +13,17 @@ class EmprestimoCreate(EmprestimoBase):
     pass 
 
 
-class EmprestimoDevolucao(BaseModel):
-    pass  # Payload para acionar o endpoint de devolução
+class EmprestimoUpdate(BaseModel):
+    exemplar_id: Optional[int] = None
+    usuario_id: Optional[int] = None
+    data_devolucao_prevista: Optional[datetime] = None
+    data_devolucao_real: Optional[datetime] = None
+    status: Optional[str] = None
+    multa_valor: Optional[Decimal] = None
 
+
+class EmprestimoDevolucao(BaseModel):
+    pass 
 
 class EmprestimoResponse(EmprestimoBase):
     id: int

@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from models.categoria import CategoriaModel
     from models.exemplar import ExemplarModel
     from models.livro_autor import LivroAutorModel
+    from models.autor import AutorModel
 
 
 class LivroModel(Base):
@@ -19,7 +20,8 @@ class LivroModel(Base):
     titulo: Mapped[str] = mapped_column(String(255))
     isbn: Mapped[Optional[str]] = mapped_column(String(20), unique=True, index=True)
     ano_publicacao: Mapped[Optional[int]]
-
+    
+    # FKs de relacionamentos 1:N mantidas normalmente
     editora_id: Mapped[int] = mapped_column(ForeignKey("bibliotek.editoras.id"))
     categoria_id: Mapped[int] = mapped_column(ForeignKey("bibliotek.categorias.id"))
 
@@ -28,6 +30,13 @@ class LivroModel(Base):
         DateTime, server_default=func.now(), onupdate=func.now()
     )
 
+    # Relacionamento N:N Direto com AutorModel
+    autores: Mapped[list["AutorModel"]] = relationship(
+        secondary="bibliotek.livro_autor",
+        back_populates="livros",
+        lazy="selectin"
+    )
+    
     editora: Mapped["EditoraModel"] = relationship(back_populates="livros")
     categoria: Mapped["CategoriaModel"] = relationship(back_populates="livros")
     

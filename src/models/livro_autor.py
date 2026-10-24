@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 class LivroAutorModel(Base):
-    __tablename__ = "livro_autores"
+    __tablename__ = "livro_autor"
     __table_args__ = {"schema": "bibliotek"}
 
     livro_id: Mapped[int] = mapped_column(

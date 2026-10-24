@@ -1,3 +1,3 @@
-from crud.crud_base import CRUD
+from crud_controllers.crud_base import CRUD
 from models.editora import EditoraModel
 cnt_editora = CRUD(EditoraModel)
